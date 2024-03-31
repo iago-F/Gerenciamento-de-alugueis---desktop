@@ -3,19 +3,13 @@
 # https://github.com/ParthJadhav/Tkinter-Designer
 
 
-from pathlib import Path
-
 # from tkinter import *
 # Explicit imports to satisfy Flake8
-from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage,Frame
 
 import tkinter as tk
 from sqlalchemy.ext.declarative import declarative_base
-from tkinter import messagebox
-from sqlalchemy import create_engine, Column, Integer, String
-from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-from models import User,Casa
+from Projeto.build.models.models import User,Casa
 from connection import engine
 
 Base = declarative_base()
@@ -26,37 +20,17 @@ session = Session()
 # Funções
 
 # cadastar usuário
-def cadastrar_usuario(nome, sobrenome, cpf, email, senha):
-    session = Session()
-    try:
-        if nome and sobrenome and cpf and email and senha:
-            # Cria uma instância de Usuario com os dados inseridos pelo usuário
-            usuario = User(nome=nome, sobreNome=sobrenome, cpf=cpf, email=email, senha=senha)
-            
-            # Adiciona o usuário ao banco de dados
-            session.add(usuario)
-            
-            # Confirma a transação
-            session.commit()
-            
-            # Exibe uma mensagem de sucesso
-            print("Usuário cadastrado com sucesso!")
-        else:
-            # Exibe um aviso se algum campo estiver vazio
-            print("Por favor, preencha todos os campos.")
-    finally:
-        # Fecha a sessão do SQLAlchemy
-        session.close()
+
 
 
 # Teste da função
-nome = "Taylla"
-sobreNome = "vilela"
-cpf = "00.00.00-20"
-email = "taylla@gmail.com"
-senha = "123456"
+# nome = "Taylla"
+# sobreNome = "vilela"
+# cpf = "00.00.00-20"
+# email = "taylla@gmail.com"
+# senha = "123456"
 
-cadastrar_usuario(nome, sobreNome, cpf, email, senha)
+# cadastrar_usuario(nome, sobreNome, cpf, email, senha)
 
 
 
@@ -102,14 +76,14 @@ def excluir_usuario(usuario_id):
 
 
 
-# #Pegar o usuário autenticado.
-# def ObterUsuarioAutenticado(nome):
-#     # Realiza uma consulta para encontrar o usuário autenticado com base no nome de usuário
-#     usuario = session.query(User).filter_by(nome_de_usuario=nome).first()
-#     if usuario:
-#         return usuario.id
-#     else: 
-#         return None
+#Pegar o usuário autenticado.
+def ObterUsuarioAutenticado(nome):
+    # Realiza uma consulta para encontrar o usuário autenticado com base no nome de usuário
+    usuario = session.query(User).filter_by(nome_de_usuario=nome).first()
+    if usuario:
+        return usuario.id
+    else:
+        return None
 
 class CadastroWindow:
     def __init__(self, root):
@@ -146,15 +120,42 @@ class CadastroWindow:
         self.botao_cadastrar = tk.Button(root, text="Cadastrar", command=self.cadastrar_usuario)
         self.botao_cadastrar.grid(row=5, column=0, columnspan=2, padx=10, pady=10)
 
+    def cadastrar_usuario(self):
+        session = Session()
+        nome = self.input_nome.get()
+        sobrenome = self.input_sobrenome.get()
+        cpf = self.input_cpf.get()
+        email = self.input_email.get()
+        senha = self.input_senha.get()
+
+        try:
+            if nome and sobrenome and cpf and email and senha:
+                # Cria uma instância de Usuario com os dados inseridos pelo usuário
+                usuario = User(nome=nome, sobreNome=sobrenome, cpf=cpf, email=email, senha=senha)
+
+                # Adiciona o usuário ao banco de dados
+                session.add(usuario)
+
+                # Confirma a transação
+                session.commit()
+
+                # Exibe uma mensagem de sucesso
+                print("Usuário cadastrado com sucesso!")
+            else:
+                # Exibe um aviso se algum campo estiver vazio
+                print("Por favor, preencha todos os campos.")
+        finally:
+            # Fecha a sessão do SQLAlchemy
+            session.close()
     def criar_tabela_usuario():
         Base.metadata.create_all(engine)
 
-    
-def Abrir_janela_cadastro():
-    root_login.destroy()
-    root_cadastro = tk.Tk()
-    app_cadastro = CadastroWindow(root_cadastro)
-    root.destroy()
+    def Abrir_janela_cadastro():
+
+        root_login.destroy()
+        root_cadastro = tk.Tk()
+        app_cadastro = CadastroWindow(root_cadastro)
+        root.destroy()
 
 
 if __name__ == "__main__":

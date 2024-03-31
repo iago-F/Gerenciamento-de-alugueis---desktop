@@ -1,5 +1,5 @@
 from sqlalchemy.orm import sessionmaker
-from models import User , Casa, Base
+from Projeto.build.models.models import Casa, Base
 from connection import engine
 from sqlalchemy import inspect
 

@@ -1,13 +1,8 @@
-import tkinter as tk
-from sqlalchemy.ext.declarative import declarative_base
-from tkinter import messagebox
-from sqlalchemy import create_engine, Column, Integer, String, inspect, exc
+from sqlalchemy import inspect, exc
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-from models import User,Casa, Contrato
+from Projeto.build.models.models import Contrato
 from connection import engine
-from models import Base
-
 
 Base = declarative_base()
 
@@ -42,7 +37,7 @@ def cadastrar_contrato(usuario_id, casa_id, dt_inicio, dt_termino, valor_total):
         # Exibe uma mensagem de erro
         print(f"Erro ao cadastrar contrato: {str(e)}")
 
-# cadastrar_contrato(usuario_id=9, casa_id=15, dt_inicio='2024-02-15', dt_termino='2024-02-20', valor_total=2000.00)
+    cadastrar_contrato(usuario_id=9, casa_id=15, dt_inicio='2024-02-15', dt_termino='2024-02-20', valor_total=2000.00)
 
 
 # Função para excluir contrato
@@ -93,8 +88,8 @@ def mostrar_contratos():
         print(f"Erro ao exibir contratos: {str(e)}")
 
 
-#testar motrar casa
-# mostrar_casas()
+#testar motrar contratos
+mostrar_contratos()
 
 
 # Função para autalizar o valo do contrato

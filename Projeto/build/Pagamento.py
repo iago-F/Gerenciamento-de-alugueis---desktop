@@ -1,14 +1,8 @@
-import tkinter as tk
-from sqlalchemy.ext.declarative import declarative_base
-from tkinter import messagebox
-from sqlalchemy import create_engine, Column, Integer, String, inspect
+from sqlalchemy import inspect
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-from models import User,Casa, Contrato, Pagamento
+from Projeto.build.models.models import Contrato, Pagamento
 from connection import engine
-from models import Base
-from datetime import datetime , date
-
 
 Base = declarative_base()
 
