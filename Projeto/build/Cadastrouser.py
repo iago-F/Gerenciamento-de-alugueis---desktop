@@ -19,18 +19,7 @@ session = Session()
 
 # Funções
 
-# cadastar usuário
 
-
-
-# Teste da função
-# nome = "Taylla"
-# sobreNome = "vilela"
-# cpf = "00.00.00-20"
-# email = "taylla@gmail.com"
-# senha = "123456"
-
-# cadastrar_usuario(nome, sobreNome, cpf, email, senha)
 
 
 
@@ -68,10 +57,10 @@ def excluir_usuario(usuario_id):
         print(f"Erro ao excluir usuário: {str(e)}")
 
 
-# teste da função 
-# id_usuario_a_excluir = 2
-
-
+# teste da função deletar user
+# id_usuario_a_excluir = 14
+#
+#
 # excluir_usuario(id_usuario_a_excluir)
 
 
@@ -147,6 +136,15 @@ class CadastroWindow:
         finally:
             # Fecha a sessão do SQLAlchemy
             session.close()
+
+    # nome = "Caio"
+    # sobreNome = "Fernandes"
+    # cpf = "00.00.00-40"
+    # email = "Caio@gmail.com"
+    # senha = "123456"
+    #
+    # cadastrar_usuario(self)
+
     def criar_tabela_usuario():
         Base.metadata.create_all(engine)
 
