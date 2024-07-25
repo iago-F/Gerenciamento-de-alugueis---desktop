@@ -28,46 +28,57 @@ class Cadastro_Casas:
     def __init__(self, master):
         self.master = master
         self.master.title("Página Cadastro Casa")
+        self.master.geometry("550x400")  # Ajustado o tamanho da tela
+        self.master.config(bg="white")  # Define o fundo da tela como branco
 
-        self.label_metro_quadrado = tk.Label(master, text="area:")
-        self.label_metro_quadrado.pack()
+        # Criar um frame para centralizar o conteúdo
+        self.frame = tk.Frame(master, bg="white")
+        self.frame.pack(expand=True, fill=tk.BOTH)
 
-        self.entry_metro_quadrado = tk.Entry(master)
-        self.entry_metro_quadrado.pack()
+        # Adiciona o título
+        self.titulo = tk.Label(self.frame, text="Cadastrar Casa", font=('Arial', 16, 'bold'), bg="white")
+        self.titulo.grid(row=0, column=0, columnspan=2, pady=10)
 
-        self.label_num_banheiro = tk.Label(master, text="Quantidade de banheiros:")
-        self.label_num_banheiro.pack()
+        # Configuração dos rótulos e campos de entrada
+        self.label_metro_quadrado = tk.Label(self.frame, text="Área (m²):", bg="white")
+        self.label_metro_quadrado.grid(row=1, column=0, padx=10, pady=5, sticky="e")
 
-        self.entry_num_banheiro = tk.Entry(master)
-        self.entry_num_banheiro.pack()
+        self.entry_metro_quadrado = tk.Entry(self.frame, bg="lightgrey")
+        self.entry_metro_quadrado.grid(row=1, column=1, padx=10, pady=5)
 
-        self.label_preco_mensal = tk.Label(master, text="Preço mensal")
-        self.label_preco_mensal.pack()
+        self.label_num_banheiro = tk.Label(self.frame, text="Quantidade de Banheiros:", bg="white")
+        self.label_num_banheiro.grid(row=2, column=0, padx=10, pady=5, sticky="e")
 
-        self.entry_preco_mensal = tk.Entry(master)
-        self.entry_preco_mensal.pack()
+        self.entry_num_banheiro = tk.Entry(self.frame, bg="lightgrey")
+        self.entry_num_banheiro.grid(row=2, column=1, padx=10, pady=5)
 
-        self.label_endereco = tk.Label(master, text="endereço")
-        self.label_endereco.pack()
+        self.label_preco_mensal = tk.Label(self.frame, text="Preço Mensal:", bg="white")
+        self.label_preco_mensal.grid(row=3, column=0, padx=10, pady=5, sticky="e")
 
-        self.entry_endereco = tk.Entry(master)
-        self.entry_endereco.pack()
+        self.entry_preco_mensal = tk.Entry(self.frame, bg="lightgrey")
+        self.entry_preco_mensal.grid(row=3, column=1, padx=10, pady=5)
 
-        self.label_num_quarto = tk.Label(master, text="quantidade de quartos")
-        self.label_num_quarto.pack()
+        self.label_endereco = tk.Label(self.frame, text="Endereço:", bg="white")
+        self.label_endereco.grid(row=4, column=0, padx=10, pady=5, sticky="e")
 
-        self.entry_num_quarto = tk.Entry(master)
-        self.entry_num_quarto.pack()
+        self.entry_endereco = tk.Entry(self.frame, bg="lightgrey")
+        self.entry_endereco.grid(row=4, column=1, padx=10, pady=5)
 
-        self.label_descricao = tk.Label(master, text="Descrição")
-        self.label_descricao.pack()
+        self.label_num_quarto = tk.Label(self.frame, text="Quantidade de Quartos:", bg="white")
+        self.label_num_quarto.grid(row=5, column=0, padx=10, pady=5, sticky="e")
 
-        self.entry_descricao = tk.Entry(master)
-        self.entry_descricao.pack()
+        self.entry_num_quarto = tk.Entry(self.frame, bg="lightgrey")
+        self.entry_num_quarto.grid(row=5, column=1, padx=10, pady=5)
 
-        self.botao_cadastrar = tk.Button(master, text="Cadastrar Casa", command=self.cadastrar_casa)
-        self.botao_cadastrar.pack()
+        self.label_descricao = tk.Label(self.frame, text="Descrição:", bg="white")
+        self.label_descricao.grid(row=6, column=0, padx=10, pady=5, sticky="e")
 
+        self.entry_descricao = tk.Entry(self.frame, bg="lightgrey")
+        self.entry_descricao.grid(row=6, column=1, padx=10, pady=5)
+
+        # Configuração do botão
+        self.botao_cadastrar = tk.Button(self.frame, text="Cadastrar Casa", command=self.cadastrar_casa, bg="lightblue")
+        self.botao_cadastrar.grid(row=7, column=0, columnspan=2, pady=20)
 
     def cadastrar_casa(self):
 
@@ -96,6 +107,7 @@ class Cadastro_Casas:
             session.add(casa)
             session.commit()
 
+            messagebox.showinfo("Casa cadastrada com sucesso!")
             print("Casa cadastrada com sucesso!")
         except Exception as e:
             session.rollback()

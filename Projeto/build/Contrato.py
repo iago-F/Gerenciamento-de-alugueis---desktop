@@ -20,35 +20,47 @@ class Contratos:
     def __init__(self, master):
         self.master = master
         self.master.title("Página Cadastro Contrato")
+        self.master.geometry("550x350")  # Diminuindo o tamanho da tela
+        self.master.config(bg="white")  # Define o fundo da tela como branco
 
-        self.label_dt_inicio = tk.Label(master, text="Data Inicial (YYYY-MM-DD): ")
-        self.label_dt_inicio.pack()
+        # Criar um frame para centralizar o conteúdo
+        self.frame = tk.Frame(master, bg="white")
+        self.frame.pack(expand=True, fill=tk.BOTH)
 
-        self.entry_dt_inicio = tk.Entry(master)
-        self.entry_dt_inicio.pack()
+        # Adiciona o título
+        self.titulo = tk.Label(self.frame, text="Cadastrar Contrato", font=('Arial', 16, 'bold'), bg="white")
+        self.titulo.grid(row=0, column=0, columnspan=2, pady=10)
 
-        self.label_dt_termino = tk.Label(master, text="Data Final (YYYY-MM-DD): ")
-        self.label_dt_termino.pack()
+        # Configuração dos rótulos e campos de entrada
+        self.label_dt_inicio = tk.Label(self.frame, text="Data Inicial (YYYY-MM-DD): ", bg="white")
+        self.label_dt_inicio.grid(row=1, column=0, padx=10, pady=5, sticky="e")
 
-        self.entry_dt_termino = tk.Entry(master)
-        self.entry_dt_termino.pack()
+        self.entry_dt_inicio = tk.Entry(self.frame, bg="lightgrey")
+        self.entry_dt_inicio.grid(row=1, column=1, padx=10, pady=5)
 
-        self.label_valor_total = tk.Label(master, text="Valor Total: ")
-        self.label_valor_total.pack()
+        self.label_dt_termino = tk.Label(self.frame, text="Data Final (YYYY-MM-DD): ", bg="white")
+        self.label_dt_termino.grid(row=2, column=0, padx=10, pady=5, sticky="e")
 
-        self.entry_valor_total = tk.Entry(master)
-        self.entry_valor_total.pack()
+        self.entry_dt_termino = tk.Entry(self.frame, bg="lightgrey")
+        self.entry_dt_termino.grid(row=2, column=1, padx=10, pady=5)
 
-        self.label_id_casa = tk.Label(master, text="ID Casa: ")
-        self.label_id_casa.pack()
+        self.label_valor_total = tk.Label(self.frame, text="Valor Total: ", bg="white")
+        self.label_valor_total.grid(row=3, column=0, padx=10, pady=5, sticky="e")
 
-        self.entry_id_casa = tk.Entry(master)
-        self.entry_id_casa.pack()
+        self.entry_valor_total = tk.Entry(self.frame, bg="lightgrey")
+        self.entry_valor_total.grid(row=3, column=1, padx=10, pady=5)
 
-        self.botao_cadastrar = tk.Button(master, text="Cadastrar Contrato", command=self.cadastrar_contrato)
-        self.botao_cadastrar.pack()
+        self.label_id_casa = tk.Label(self.frame, text="ID Casa: ", bg="white")
+        self.label_id_casa.grid(row=4, column=0, padx=10, pady=5, sticky="e")
 
-    # Função para Cadastrar Contrato
+        self.entry_id_casa = tk.Entry(self.frame, bg="lightgrey")
+        self.entry_id_casa.grid(row=4, column=1, padx=10, pady=5)
+
+        # Configuração dos botões
+        self.botao_cadastrar = tk.Button(self.frame, text="Cadastrar Contrato", command=self.cadastrar_contrato,
+                                         bg="lightblue")
+        self.botao_cadastrar.grid(row=5, column=0, columnspan=2, pady=20)
+
     def cadastrar_contrato(self):
 
         try:

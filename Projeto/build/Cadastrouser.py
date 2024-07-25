@@ -7,6 +7,8 @@
 # Explicit imports to satisfy Flake8
 
 import tkinter as tk
+from tkinter import messagebox
+
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from Projeto.build.models.models import User,Casa
@@ -77,37 +79,52 @@ def ObterUsuarioAutenticado(nome):
 class CadastroWindow:
     def __init__(self, root):
         self.root = root
-        root.title("Cadastro de Usuário")
+        self.root.title("Cadastro de Usuário")
+        self.root.geometry("550x350")  # Ajustado o tamanho da tela
+        self.root.config(bg="white")  # Define o fundo da tela como branco
+
+        # Criar um frame para centralizar o conteúdo
+        self.frame = tk.Frame(root, bg="white")
+        self.frame.pack(expand=True, fill=tk.BOTH)
+
+        # Adiciona o título
+        self.titulo = tk.Label(self.frame, text="Cadastrar Usuário", font=('Arial', 16, 'bold'), bg="white")
+        self.titulo.grid(row=0, column=0, columnspan=2, pady=10)
 
         # Labels e Entradas
-        self.label_nome = tk.Label(root, text="Nome:")
-        self.label_nome.grid(row=0, column=0, padx=10, pady=5)
-        self.input_nome = tk.Entry(root)
-        self.input_nome.grid(row=0, column=1, padx=10, pady=5)
+        self.label_nome = tk.Label(self.frame, text="Nome:", bg="white")
+        self.label_nome.grid(row=1, column=0, padx=10, pady=5, sticky="e")
 
-        self.label_sobrenome = tk.Label(root, text="Sobrenome:")
-        self.label_sobrenome.grid(row=1, column=0, padx=10, pady=5)
-        self.input_sobrenome = tk.Entry(root)
-        self.input_sobrenome.grid(row=1, column=1, padx=10, pady=5)
+        self.input_nome = tk.Entry(self.frame, bg="lightgrey")
+        self.input_nome.grid(row=1, column=1, padx=10, pady=5)
 
-        self.label_cpf = tk.Label(root, text="CPF:")
-        self.label_cpf.grid(row=2, column=0, padx=10, pady=5)
-        self.input_cpf = tk.Entry(root)
-        self.input_cpf.grid(row=2, column=1, padx=10, pady=5)
+        self.label_sobrenome = tk.Label(self.frame, text="Sobrenome:", bg="white")
+        self.label_sobrenome.grid(row=2, column=0, padx=10, pady=5, sticky="e")
 
-        self.label_email = tk.Label(root, text="Email:")
-        self.label_email.grid(row=3, column=0, padx=10, pady=5)
-        self.input_email = tk.Entry(root)
-        self.input_email.grid(row=3, column=1, padx=10, pady=5)
+        self.input_sobrenome = tk.Entry(self.frame, bg="lightgrey")
+        self.input_sobrenome.grid(row=2, column=1, padx=10, pady=5)
 
-        self.label_senha = tk.Label(root, text="Senha:")
-        self.label_senha.grid(row=4, column=0, padx=10, pady=5)
-        self.input_senha = tk.Entry(root, show="*")
-        self.input_senha.grid(row=4, column=1, padx=10, pady=5)
+        self.label_cpf = tk.Label(self.frame, text="CPF:", bg="white")
+        self.label_cpf.grid(row=3, column=0, padx=10, pady=5, sticky="e")
+
+        self.input_cpf = tk.Entry(self.frame, bg="lightgrey")
+        self.input_cpf.grid(row=3, column=1, padx=10, pady=5)
+
+        self.label_email = tk.Label(self.frame, text="Email:", bg="white")
+        self.label_email.grid(row=4, column=0, padx=10, pady=5, sticky="e")
+
+        self.input_email = tk.Entry(self.frame, bg="lightgrey")
+        self.input_email.grid(row=4, column=1, padx=10, pady=5)
+
+        self.label_senha = tk.Label(self.frame, text="Senha:", bg="white")
+        self.label_senha.grid(row=5, column=0, padx=10, pady=5, sticky="e")
+
+        self.input_senha = tk.Entry(self.frame, show="*", bg="lightgrey")
+        self.input_senha.grid(row=5, column=1, padx=10, pady=5)
 
         # Botão de cadastro
-        self.botao_cadastrar = tk.Button(root, text="Cadastrar", command=self.cadastrar_usuario)
-        self.botao_cadastrar.grid(row=5, column=0, columnspan=2, padx=10, pady=10)
+        self.botao_cadastrar = tk.Button(self.frame, text="Cadastrar", command=self.cadastrar_usuario, bg="lightblue")
+        self.botao_cadastrar.grid(row=6, column=0, columnspan=2, pady=20)
 
     def cadastrar_usuario(self):
         session = Session()
@@ -118,7 +135,7 @@ class CadastroWindow:
         senha = self.input_senha.get()
 
         try:
-            if nome and sobrenome and cpf and email and senha:
+            if cpf and email:
                 # Cria uma instância de Usuario com os dados inseridos pelo usuário
                 usuario = User(nome=nome, sobreNome=sobrenome, cpf=cpf, email=email, senha=senha)
 
@@ -129,7 +146,7 @@ class CadastroWindow:
                 session.commit()
 
                 # Exibe uma mensagem de sucesso
-                print("Usuário cadastrado com sucesso!")
+                messagebox.showinfo("Sucesso", "Usuário cadastrado com sucesso!")
             else:
                 # Exibe um aviso se algum campo estiver vazio
                 print("Por favor, preencha todos os campos.")

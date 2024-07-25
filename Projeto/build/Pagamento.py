@@ -18,27 +18,40 @@ class PaginaPagamento:
     def __init__(self, master):
         self.master = master
         self.master.title("Página de Pagamento")
+        self.master.geometry("550x350")  # Diminuindo o tamanho da tela
+        self.master.config(bg="white")  # Define o fundo da tela como branco
 
-        self.label_contrato_id = tk.Label(master, text="ID do Contrato:")
-        self.label_contrato_id.pack()
+        # Criar um frame para centralizar o conteúdo
+        self.frame = tk.Frame(master, bg="white")
+        self.frame.pack(expand=True, fill=tk.BOTH)
 
-        self.entry_contrato_id = tk.Entry(master)
-        self.entry_contrato_id.pack()
+        # Adiciona o título
+        self.titulo = tk.Label(self.frame, text="Cadastrar Pagamento", font=('Arial', 16, 'bold'), bg="white")
+        self.titulo.grid(row=0, column=0, columnspan=2, pady=10)
 
-        self.label_dt_pagamento = tk.Label(master, text="Data do Pagamento (YYYY-MM-DD):")
-        self.label_dt_pagamento.pack()
+        # Configuração dos rótulos e campos de entrada
+        self.label_contrato_id = tk.Label(self.frame, text="ID do Contrato:", bg="white")
+        self.label_contrato_id.grid(row=1, column=0, padx=10, pady=5, sticky="e")
 
-        self.entry_dt_pagamento = tk.Entry(master)
-        self.entry_dt_pagamento.pack()
+        self.entry_contrato_id = tk.Entry(self.frame, bg="lightgrey")
+        self.entry_contrato_id.grid(row=1, column=1, padx=10, pady=5)
 
-        self.label_valor_pagamento = tk.Label(master, text="Valor do Pagamento:")
-        self.label_valor_pagamento.pack()
+        self.label_dt_pagamento = tk.Label(self.frame, text="Data do Pagamento (YYYY-MM-DD):", bg="white")
+        self.label_dt_pagamento.grid(row=2, column=0, padx=10, pady=5, sticky="e")
 
-        self.entry_valor_pagamento = tk.Entry(master)
-        self.entry_valor_pagamento.pack()
+        self.entry_dt_pagamento = tk.Entry(self.frame, bg="lightgrey")
+        self.entry_dt_pagamento.grid(row=2, column=1, padx=10, pady=5)
 
-        self.botao_cadastrar = tk.Button(master, text="Cadastrar Pagamento", command=self.cadastrar_pagamento)
-        self.botao_cadastrar.pack()
+        self.label_valor_pagamento = tk.Label(self.frame, text="Valor do Pagamento:", bg="white")
+        self.label_valor_pagamento.grid(row=3, column=0, padx=10, pady=5, sticky="e")
+
+        self.entry_valor_pagamento = tk.Entry(self.frame, bg="lightgrey")
+        self.entry_valor_pagamento.grid(row=3, column=1, padx=10, pady=5)
+
+        # Configuração do botão
+        self.botao_cadastrar = tk.Button(self.frame, text="Cadastrar Pagamento", command=self.cadastrar_pagamento,
+                                         bg="lightblue")
+        self.botao_cadastrar.grid(row=4, column=0, columnspan=2, pady=20)
 
     def cadastrar_pagamento(self):
         try:
