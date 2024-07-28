@@ -1,0 +1,2 @@
+2024-07-28 15:35:42,172 - INFO - Este é um log de informação.
+2024-07-28 15:35:42,173 - ERROR - Este é um log de erro.

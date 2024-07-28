@@ -4,7 +4,7 @@
 # from sqlalchemy import inspect
 
 from sqlalchemy import inspect
-from Projeto.build.models.models import Casa, Base
+from Projeto.build.models.models import Casa, Base, User
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from Projeto.build.models.models import Contrato, Pagamento
@@ -13,7 +13,7 @@ from connection import engine
 from auth import get_authenticated_user
 import tkinter as tk
 from tkinter import ttk
-# Base = declarative_base()
+from Projeto.build.Logging import logging_config
 
 
 
@@ -90,6 +90,11 @@ class Cadastro_Casas:
             metro_quadrado = float(self.entry_metro_quadrado.get())
             valor_aluguel_mensal = float(self.entry_preco_mensal.get())
 
+            # Verificar se algum valor é negativo
+            if num_quartos < 0 or num_banheiros < 0 or metro_quadrado < 0 or valor_aluguel_mensal < 0:
+                messagebox.showerror("Erro", "Os valores não podem ser negativos.")
+                return
+
             authenticated_user = get_authenticated_user()
             if not authenticated_user:
                 raise Exception("Usuário não autenticado")
@@ -107,8 +112,9 @@ class Cadastro_Casas:
             session.add(casa)
             session.commit()
 
+
             messagebox.showinfo("Casa cadastrada com sucesso!")
-            print("Casa cadastrada com sucesso!")
+            logging_config.logging.info(f'Casa {casa.id} cadastrada , Nome: {authenticated_user.nome},')
         except Exception as e:
             session.rollback()
             print(f"Erro ao cadastrar casa: {str(e)}")

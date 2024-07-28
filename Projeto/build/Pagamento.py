@@ -54,6 +54,50 @@ class PaginaPagamento:
                                          bg="lightblue")
         self.botao_cadastrar.grid(row=4, column=0, columnspan=2, pady=20)
 
+    # def cadastrar_pagamento(self):
+    #     try:
+    #         contrato_id = int(self.entry_contrato_id.get())
+    #         dt_pagamento = self.entry_dt_pagamento.get()
+    #         valor_pagamento = float(self.entry_valor_pagamento.get())
+    #
+    #         inspector = inspect(engine)
+    #         if not inspector.has_table('pagamentos'):
+    #             Pagamento.__table__.create(bind=engine)
+    #
+    #         contrato = session.query(Contrato).filter_by(id=contrato_id).first()
+    #
+    #         if contrato:
+    #             pagamento = Pagamento(contrato_id=contrato_id, dt_pagamento=dt_pagamento, valor_pagamento=valor_pagamento)
+    #             contrato.pagamentos.append(pagamento)
+    #             session.add(pagamento)
+    #             session.commit()
+    #             messagebox.showinfo("Sucesso", "Pagamento cadastrado com sucesso!")
+    #         else:
+    #             messagebox.showerror("Erro", "Contrato não encontrado.")
+    #     except Exception as e:
+    #         session.rollback()
+    #         messagebox.showerror("Erro", f"Erro ao cadastrar pagamento: {str(e)}")
+    #
+
+    def verificar_limite_pagamentos(self, contrato_id, novo_pagamento_valor):
+        try:
+            # Obter o contrato específico
+            contrato = session.query(Contrato).filter_by(id=contrato_id).first()
+            if not contrato:
+                raise Exception("Contrato não encontrado")
+
+            # Calcular a soma de todos os pagamentos existentes para o contrato
+            soma_pagamentos = session.query(func.sum(Pagamento.valor_pagamento)).filter_by(contrato_id=contrato_id).scalar() or 0
+
+            # Verificar se a soma dos pagamentos com o novo pagamento ultrapassa o valor total do contrato
+            if soma_pagamentos + novo_pagamento_valor > contrato.valor_total:
+                return False
+
+            return True
+        except Exception as e:
+            print(f"Erro ao verificar limite de pagamentos: {e}")
+            return False
+
     def cadastrar_pagamento(self):
         try:
             contrato_id = int(self.entry_contrato_id.get())
@@ -63,6 +107,11 @@ class PaginaPagamento:
             inspector = inspect(engine)
             if not inspector.has_table('pagamentos'):
                 Pagamento.__table__.create(bind=engine)
+
+            # Verificar se o pagamento excede o limite do contrato
+            if not self.verificar_limite_pagamentos(contrato_id, valor_pagamento):
+                messagebox.showerror("Erro", "O valor do pagamento excede o valor total do contrato.")
+                return
 
             contrato = session.query(Contrato).filter_by(id=contrato_id).first()
 
@@ -79,15 +128,10 @@ class PaginaPagamento:
             messagebox.showerror("Erro", f"Erro ao cadastrar pagamento: {str(e)}")
 
 
-    # # Teste de cadastro de Pagamento
-    # dt_pagamento = datetime(2024, 2, 15)
-    # valor_pagamento = 5000.0
-    # cadastrar_pagamento(contrato_id=2, dt_pagamento=dt_pagamento, valor_pagamento=valor_pagamento)
 
 
     # Função para consultar pagamentos
-
-    def get_mostrar_pagamentos(self):
+    def get_mostrar_pagamentos():
         session = Session()
 
         authenticated_user = get_authenticated_user()
@@ -97,26 +141,43 @@ class PaginaPagamento:
         usuario_id = authenticated_user.id
 
         try:
-            # Consulta para calcular o valor total dos contratos do usuário
-            total_valor_contratos = (
-                session.query(func.sum(Contrato.valor_total))
-                .filter(Contrato.usuario_id == usuario_id)
-                .scalar()  # Obtém o valor total como um número
-            )
+            # Primeiro, obtenha os contratos do usuário
+            contratos = session.query(Contrato).filter_by(usuario_id=usuario_id).all()
+            if not contratos:
+                messagebox.showerror("Erro", "Nenhum contrato encontrado para o usuário.")
+                return
 
-            # Se não houver contratos, total_valor_contratos será None, então definimos como 0
-            if total_valor_contratos is None:
-                total_valor_contratos = 0
+            # Obtenha os IDs dos contratos
+            contrato_ids = [contrato.id for contrato in contratos]
 
-            return total_valor_contratos
+            # Em seguida, busque os pagamentos associados a esses contratos
+            pagamentos = session.query(Pagamento).filter(Pagamento.contrato_id.in_(contrato_ids)).all()
 
-        except Exception as e:
-            print(f"Erro ao mostrar pagamentos: {e}")
-            return 0
+            if pagamentos:
+                for pagamento in pagamentos:
+                    print(
+                        f"ID: {pagamento.id} , Data Do Pagamento: {pagamento.dt_pagamento}, Valor do Pagamento: {pagamento.valor_pagamento}")
+            else:
+                messagebox.showerror("Erro", "Nenhum pagamento encontrado para os contratos do usuário.")
+
+            return pagamentos
+
+        except SQLAlchemyError as e:
+            print(f"Erro ao mostrar pagamentos: {str(e)}")
         finally:
             session.close()
 
-
+    def carregar_pagamentos(self):
+        try:
+            # Chama a função para obter os pagamentos
+            pagamentos = self.get_mostrar_pagamentos()
+            for pagamento in pagamentos:
+                self.lista_pagamentos.insert(
+                    tk.END,
+                    f"ID: {pagamento['id']}, Valor: R${pagamento['valor']:.2f}, Data: {pagamento['data']}"
+                )
+        except Exception as e:
+            messagebox.showerror("Erro ao mostrar os pagamentos", str(e))
 
     # Função para excluir Pagamento
     def excluir_pagamento(pagamento_id):
@@ -142,10 +203,6 @@ class PaginaPagamento:
             # Exibe uma mensagem de erro
             print(f"Erro ao excluir pagamento: {str(e)}")
 
-
-    # id_excluir_contrato = 1
-
-    # excluir_pagamento(id_excluir_contrato)
 
 
     # função para atulizar o pagamento

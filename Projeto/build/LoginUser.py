@@ -4,6 +4,9 @@ from sqlalchemy.orm import sessionmaker
 from Projeto.build.models.models import User
 from Cadastrouser import CadastroWindow
 from auth import authenticate_user
+from Projeto.build.Logging import logging_config
+
+
 
 Session = sessionmaker(bind=engine)
 session = Session()
@@ -59,6 +62,8 @@ class PaginaLogin:
         senha = self.senha_entry.get()
         success, user = authenticate_user(nome, senha)
         if success:
+            # Registra o login bem-sucedido
+            logging_config.logging.info(f'Login bem-sucedido: Nome: {user.nome}, Email: {user.email}')
             messagebox.showinfo("Sucesso", f"Login bem-sucedido!\nNome: {user.nome}\nSobrenome: {user.sobreNome}\nEmail: {user.email}")
             self.mostrar_pagina_principal(user.nome, user.email, user.id, user.sobreNome, user.cpf)
         else:

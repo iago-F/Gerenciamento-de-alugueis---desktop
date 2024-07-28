@@ -9,6 +9,9 @@ from connection import engine
 import tkinter as tk
 from datetime import datetime
 from auth import  get_authenticated_user
+import logging
+import os
+from Projeto.build.Logging import logging_config
 
 Base = declarative_base()
 
@@ -112,6 +115,7 @@ class Contratos:
 
             # Exibe uma mensagem de sucesso
             print("Contrato cadastrado com sucesso!")
+            logging_config.logging.info(f'Contrato {contrato.id} cadastrado')
         except exc.SQLAlchemyError as e:
             # Em caso de erro, desfaz a transação
             session.rollback()

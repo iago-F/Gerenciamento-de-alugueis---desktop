@@ -51,23 +51,7 @@ class meus_contratos():
         self.contract_details = {}
 
         self.exibir_contratos()
-    # def exibir_contratos(self):
-    #     try:
-    #         authenticated_user = get_authenticated_user()
-    #         if not authenticated_user:
-    #             raise Exception("Usuário não autenticado")
-    #
-    #         usuario_id = authenticated_user.id
-    #         contratos = session.query(Contrato).filter_by(usuario_id=usuario_id).all()
-    #
-    #         for contrato in contratos:
-    #             self.tree.insert("", "end",
-    #                              values=(contrato.id, contrato.dt_inicio, contrato.dt_termino, contrato.valor_total))
-    #
-    #     except Exception as e:
-    #         messagebox.showerror("Erro", f"Erro ao mostrar os contratos: {str(e)}")
-    #     finally:
-    #         session.close()
+
 
     def exibir_contratos(self):
         try:

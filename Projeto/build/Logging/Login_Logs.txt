@@ -1,0 +1,6 @@
+2024-07-28 16:19:58,269 - INFO - Login bem-sucedido: Nome: Taylla, Email: taylla@gmail.com
+2024-07-28 16:23:17,920 - INFO - Login bem-sucedido: Nome: Taylla, Email: taylla@gmail.com
+2024-07-28 16:28:31,603 - INFO - Login bem-sucedido: Nome: Taylla, Email: taylla@gmail.com
+2024-07-28 16:29:14,646 - INFO - Casa cadastrada : Casa: 29, Nome: User.nome,
+2024-07-28 16:32:49,420 - INFO - Login bem-sucedido: Nome: Taylla, Email: taylla@gmail.com
+2024-07-28 16:33:54,258 - INFO - Casa 30 cadastrada , Nome: Taylla,

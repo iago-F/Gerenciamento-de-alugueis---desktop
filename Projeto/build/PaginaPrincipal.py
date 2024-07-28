@@ -136,17 +136,20 @@ class PaginaPrincipal:
 
         self.user_frame = tk.Frame(master, bg="white")
         self.user_frame.pack(pady=20, anchor="w")
+
         # Adicionando o texto "Agenda de Contratos"
         self.label_agenda = tk.Label(self.user_frame, text="Agenda de Contratos", anchor="w", bg="white",
                                      font=('Arial', 14), fg="lightblue")
         self.label_agenda.pack(fill=tk.X, anchor="w", padx=10, )
 
         # Adicionando o calendário
-        self.calendar_frame = tk.Frame(master, bg="white")  # Definindo o tamanho do frame
-        self.calendar_frame.pack(anchor="w", padx=10, pady=10)
 
-        self.calendar = Calendar(self.calendar_frame, selectmode='day', date_pattern='yyyy-mm-dd')
-        self.calendar.pack()
+        self.calendar_values_frame = tk.Frame(master, bg="white")
+        self.calendar_values_frame.pack(anchor="w")
+
+        # Adicionando o calendário
+        self.calendar = Calendar(self.calendar_values_frame, selectmode='day', date_pattern='yyyy-mm-dd')
+        self.calendar.grid(row=0, column=0, padx=10, pady=0, sticky="nw")
 
         # Alterando a cor do calendário
         self.calendar.config(
@@ -155,10 +158,22 @@ class PaginaPrincipal:
             headersbackground='lightblue',
             headersforeground='black'
         )
-        self.calendar.pack()
 
-        self.contrato_info_frame = tk.Frame(master, bg="white")
-        self.contrato_info_frame.pack(pady=20, anchor="w")
+        self.calendar.tag_config('start', background='green', foreground='white')
+        self.calendar.tag_config('end', background='red', foreground='white')
+
+        # Frame para conter os rótulos de valor total e quantidade total
+        self.contratos_frame = tk.Frame(self.calendar_values_frame, bg="white")
+        self.contratos_frame.grid(row=0, column=1, padx=10, pady=(0, 5), sticky="nw")
+
+        # Adicionando o rótulo para o valor total dos contratos
+        self.label_total_contratos = tk.Label(self.contratos_frame, text="", font=('Arial', 14), bg="white")
+        self.label_total_contratos.pack(anchor="nw")
+
+        # Adicionando o rótulo para a quantidade total de contratos
+        self.label_quantidade_contratos = tk.Label(self.contratos_frame, text="", font=('Arial', 14), bg="white")
+        self.label_quantidade_contratos.pack(anchor="nw")
+        self.atualizar_valor_total_contratos()
 
         self.contract_details = {}
 
@@ -166,24 +181,6 @@ class PaginaPrincipal:
 
         # Bind evento de clique no calendário
         self.calendar.bind("<<CalendarSelected>>", self.mostrar_detalhes_contrato)
-
-        # Criar um frame para o conteúdo
-        self.frame = tk.Frame(master, bg="white")
-        self.frame.pack(expand=True, fill=tk.BOTH)
-
-        # Adiciona o título com informações do usuário
-        self.titulo = tk.Label(self.frame, text=f"Bem-vindo, {nome_usuario} {sobrenome_usuario}", font=('Arial', 16, 'bold'), bg="lightblue")
-        self.titulo.pack(pady=10)
-
-        # Adiciona o rótulo para o valor total dos contratos
-        self.label_total_contratos = tk.Label(self.frame, text="", font=('Arial', 14), bg="white")
-        self.label_total_contratos.pack(pady=10)
-
-        self.label_quantidade_contratos = tk.Label(self.frame, text="", font=('Arial', 14), bg="white")
-        self.label_quantidade_contratos.pack(pady=10)
-
-        # Atualiza o valor total dos contratos
-        self.atualizar_valor_total_contratos()
 
     def atualizar_valor_total_contratos(self):
         try:
@@ -210,8 +207,8 @@ class PaginaPrincipal:
             if total_valor_contratos is None:
                 total_valor_contratos = 0
 
+            self.label_quantidade_contratos.config(text=f"Contratos ativos: {quantidade_contratos}")
             self.label_total_contratos.config(text=f"Valor total dos contratos: R${total_valor_contratos:,.2f}")
-            self.label_quantidade_contratos.config(text=f"Quantidade total de contratos: {quantidade_contratos}")
 
 
         except Exception as e:
@@ -249,7 +246,7 @@ class PaginaPrincipal:
             for contrato in contratos:
                 # Adiciona eventos ao calendário (cor de fundo para marcar as datas)
                 self.calendar.calevent_create(contrato.dt_inicio, 'Início Contrato', 'start')
-                self.calendar.calevent_create(contrato.dt_termino, 'Fim Contrato', 'end')
+                self.calendar.calevent_create(contrato.dt_termino, 'Fim Contrato', 'end' )
 
                 # Adiciona detalhes do contrato ao dicionário (usado ao clicar na data)
                 self.contract_details[contrato.dt_inicio.strftime('%Y-%m-%d')] = contrato

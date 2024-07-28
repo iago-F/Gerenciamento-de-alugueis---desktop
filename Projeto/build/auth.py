@@ -16,5 +16,6 @@ def authenticate_user(nome, senha):
     else:
         return False, None
 
+
 def get_authenticated_user():
     return authenticated_user
