@@ -30,7 +30,7 @@ class meus_pagamentos:
         self.exibir_pagamentos()
     def exibir_pagamentos(self):
         try:
-            pagamentos = PaginaPagamento.get_mostrar_pagamentos()
+            pagamentos = PaginaPagamento.get_mostrar_pagamentos(self)
 
             for pagamento in pagamentos:
 

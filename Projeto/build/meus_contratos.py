@@ -32,7 +32,7 @@ class meus_contratos():
         self.tree.column("Data de termino", width=100)
         self.tree.column("Valor Total", width=100)
 
-        self.exibir_contratos()
+
 
         # Criando um Frame para centralizar os botões
         self.button_frame = tk.Frame(master)
@@ -47,24 +47,10 @@ class meus_contratos():
                                          bg="green",
                                          fg="white")
         self.botao_atualizar.pack(side=tk.LEFT, padx=13)
-    def exibir_contratos(self):
-        try:
-            authenticated_user = get_authenticated_user()
-            if not authenticated_user:
-                raise Exception("Usuário não autenticado")
 
-            usuario_id = authenticated_user.id
-            contratos = session.query(Contrato).filter_by(usuario_id=usuario_id).all()
+        self.contract_details = {}
 
-            for contrato in contratos:
-                self.tree.insert("", "end",
-                                 values=(contrato.id, contrato.dt_inicio, contrato.dt_termino, contrato.valor_total))
-
-        except Exception as e:
-            messagebox.showerror("Erro", f"Erro ao mostrar os contratos: {str(e)}")
-        finally:
-            session.close()
-
+        self.exibir_contratos()
     # def exibir_contratos(self):
     #     try:
     #         authenticated_user = get_authenticated_user()
@@ -75,9 +61,6 @@ class meus_contratos():
     #         contratos = session.query(Contrato).filter_by(usuario_id=usuario_id).all()
     #
     #         for contrato in contratos:
-    #             # Adicionando detalhes do contrato ao dicionário self.contract_details
-    #             self.PaginaPrincipal.contract_details[contrato.dt_inicio] = contrato
-    #
     #             self.tree.insert("", "end",
     #                              values=(contrato.id, contrato.dt_inicio, contrato.dt_termino, contrato.valor_total))
     #
@@ -85,6 +68,27 @@ class meus_contratos():
     #         messagebox.showerror("Erro", f"Erro ao mostrar os contratos: {str(e)}")
     #     finally:
     #         session.close()
+
+    def exibir_contratos(self):
+        try:
+            authenticated_user = get_authenticated_user()
+            if not authenticated_user:
+                raise Exception("Usuário não autenticado")
+
+            usuario_id = authenticated_user.id
+            contratos = session.query(Contrato).filter_by(usuario_id=usuario_id).all()
+
+            for contrato in contratos:
+                # Adicionando detalhes do contrato ao dicionário self.contract_details
+                self.contract_details[contrato.dt_inicio] = contrato
+
+                self.tree.insert("", "end",
+                                 values=(contrato.id, contrato.dt_inicio, contrato.dt_termino, contrato.valor_total))
+
+        except Exception as e:
+            messagebox.showerror("Erro", f"Erro ao mostrar os contratos: {str(e)}")
+        finally:
+            session.close()
 
 
     def excluir_contrato_selecionado(self):

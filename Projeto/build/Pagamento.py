@@ -1,4 +1,4 @@
-from sqlalchemy import inspect
+from sqlalchemy import inspect, func
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from Projeto.build.models.models import Contrato, Pagamento
@@ -6,7 +6,8 @@ from tkinter import messagebox
 from connection import engine
 from auth import get_authenticated_user
 import tkinter as tk
-
+from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy.orm import joinedload
 from tkinter import ttk
 # Base = declarative_base()
 
@@ -85,29 +86,36 @@ class PaginaPagamento:
 
 
     # Função para consultar pagamentos
-    def get_mostrar_pagamentos(self):
 
+    def get_mostrar_pagamentos(self):
         session = Session()
 
         authenticated_user = get_authenticated_user()
         if not authenticated_user:
-            raise Exception("usuário não autenticado")
+            raise Exception("Usuário não autenticado")
 
-        usuario_id=authenticated_user.id
+        usuario_id = authenticated_user.id
 
         try:
-            pagamentos = session.query(Pagamento).filter_by(usuario_id=usuario_id).all()
-            return pagamentos
+            # Consulta para calcular o valor total dos contratos do usuário
+            total_valor_contratos = (
+                session.query(func.sum(Contrato.valor_total))
+                .filter(Contrato.usuario_id == usuario_id)
+                .scalar()  # Obtém o valor total como um número
+            )
 
-            if pagamentos:
-                for pagamento in pagamentos:
-                    print(f"ID: {pagamento.id} , Data Do pagamento: {pagamento.dt_pagamento}, Valor do pagamento: {pagamento.valor_pagamento}")
-            else:
-                messagebox.showerror("Erro", "pagamentos não cadastrados")
+            # Se não houver contratos, total_valor_contratos será None, então definimos como 0
+            if total_valor_contratos is None:
+                total_valor_contratos = 0
+
+            return total_valor_contratos
+
         except Exception as e:
-            print(f"Erro ao mostrar pagamentos:{str(e)}")
+            print(f"Erro ao mostrar pagamentos: {e}")
+            return 0
         finally:
             session.close()
+
 
 
     # Função para excluir Pagamento

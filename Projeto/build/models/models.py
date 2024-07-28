@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer, String, ForeignKey,Float,DateTime
 from sqlalchemy.orm import relationship
 from sqlalchemy.orm import declarative_base
-from connection import engine
+from  Projeto.build.connection import engine
 
 
 Base = declarative_base()
