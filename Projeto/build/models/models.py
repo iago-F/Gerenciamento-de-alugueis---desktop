@@ -28,6 +28,7 @@ class Casa(Base):
     num_banheiros = Column(Integer, nullable=False)
     metro_quadrado = Column(Float, nullable=False)
     valor_aluguel_mensal = Column(Float, nullable=False)
+    descricao = Column(String, nullable=False)
     usuario_id = Column(Integer, ForeignKey(User.id), nullable=False)
 
 

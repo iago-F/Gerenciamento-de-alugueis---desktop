@@ -20,8 +20,6 @@ from Projeto.build.Logging import logging_config
 Session = sessionmaker(bind=engine)
 session = Session()
 
-Session = sessionmaker(bind=engine)
-session = Session()
 
 class Cadastro_Casas:
 
@@ -89,6 +87,8 @@ class Cadastro_Casas:
             num_banheiros = int(self.entry_num_banheiro.get())
             metro_quadrado = float(self.entry_metro_quadrado.get())
             valor_aluguel_mensal = float(self.entry_preco_mensal.get())
+            descricao = str(self.entry_descricao.get())
+
 
             # Verificar se algum valor é negativo
             if num_quartos < 0 or num_banheiros < 0 or metro_quadrado < 0 or valor_aluguel_mensal < 0:
@@ -107,14 +107,14 @@ class Cadastro_Casas:
 
             casa = Casa(num_quartos=num_quartos, num_banheiros=num_banheiros,
                         metro_quadrado=metro_quadrado, valor_aluguel_mensal=valor_aluguel_mensal,
-                        usuario_id=usuario_id)
+                        usuario_id=usuario_id, descricao=descricao)
 
             session.add(casa)
             session.commit()
 
 
             messagebox.showinfo("Casa cadastrada com sucesso!")
-            logging_config.logging.info(f'Casa {casa.id} cadastrada , Nome: {authenticated_user.nome},')
+            logging_config.logging.error(f'Erro ao cadastrar Caaa {casa.id}  ')
         except Exception as e:
             session.rollback()
             print(f"Erro ao cadastrar casa: {str(e)}")
@@ -168,7 +168,7 @@ def get_mostrar_casas():
             for casa in casas:
                 print(f"ID: {casa.id}, Número de Quartos: {casa.num_quartos}, Número de Banheiros: {casa.num_banheiros}, "
                       f"Metro Quadrado: {casa.metro_quadrado}, Valor do Aluguel Mensal: {casa.valor_aluguel_mensal}, "
-                      f"ID do Usuário: {casa.usuario_id}")
+                      f"ID do Usuário: {casa.usuario_id}, fDescrição{casa.descricao}")
         else:
             print("Não há casas cadastradas.")
     except Exception as e:

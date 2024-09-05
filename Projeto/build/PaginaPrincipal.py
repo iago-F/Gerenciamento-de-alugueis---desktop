@@ -45,6 +45,12 @@ class PaginaPrincipal:
         self.topbar = tk.Frame(master, bg="lightblue")
         self.topbar.pack(fill=tk.X)
 
+        #imagem meu perfil
+        self.imagem_original_icon = Image.open(
+            r"C:\Users\IAGO\Documents\Projeto desktop\Projeto\build\assets\imgs\icon_perfil.png")
+        self.imagem_icon = self.imagem_original_icon.resize((30, 30), Image.LANCZOS)
+        self.imagem_icon_tk = ImageTk.PhotoImage(self.imagem_icon)
+
         # Criando a top navigation bar ao lado do menu suspenso
         self.navbar_frame = tk.Frame(self.topbar, bg="lightblue")
         self.navbar_frame.pack(side=tk.LEFT, padx=0, pady=5)
@@ -52,7 +58,10 @@ class PaginaPrincipal:
         # Adicionando a imagem ao navbar_frame
         self.label_imagem = tk.Label(self.navbar_frame, image=self.imagem_tk, bg="lightblue")
         self.label_imagem.pack(side=tk.LEFT, padx=10, pady=5)
-        self.label_imagem.bind("<Button-1>", self.mostrar_menu_suspenso)
+
+        # self.label_imagem_icon = tk.Label(self.navbar_frame, image=self.imagem_icon_tk, bg="lightblue")
+        # self.label_imagem_icon.pack(side=tk.LEFT, padx=10, pady=5)
+
 
         # Criar o menu suspenso
         self.menu_suspenso = tk.Menu(master, tearoff=0)
@@ -86,6 +95,10 @@ class PaginaPrincipal:
         self.botao_contrato_nav = tk.Button(self.navbar_frame, text="Cadastrar Contrato", command=self.ir_para_contrato,
                                             bg="orange", fg="white", font=button_font)
         self.botao_contrato_nav.pack(side=tk.LEFT, padx=5, pady=5)
+
+        self.label_imagem_icon = tk.Label(self.navbar_frame, image=self.imagem_icon_tk, bg="lightblue")
+        self.label_imagem_icon.pack(side=tk.RIGHT, padx=10, pady=5)
+        self.label_imagem_icon.bind("<Button-1>", self.mostrar_menu_suspenso)
 
         # Remover o botão de logout daqui
         # self.botao_logout_nav = tk.Button(self.topbar, text="Logout", command=self.logout, bg="#ff9999", fg="white",font=button_font)

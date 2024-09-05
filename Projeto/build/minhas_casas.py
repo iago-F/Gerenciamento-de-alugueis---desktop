@@ -13,22 +13,24 @@ class minhas_casas:
     def __init__(self, master):
     # Adicionando a tabela de casas
         self.master = master
-        self.tree = ttk.Treeview(master, columns=("ID", "Quartos", "Banheiros", "Área", "Aluguel"), show="headings")
+        self.tree = ttk.Treeview(master, columns=("ID", "Quartos", "Banheiros", "Área", "Aluguel", "Descrição"), show="headings")
         self.tree.heading("ID", text="ID")
         self.tree.heading("Quartos", text="Quartos")
         self.tree.heading("Banheiros", text="Banheiros")
         self.tree.heading("Área", text="Área")
         self.tree.heading("Aluguel", text="Aluguel")
+        self.tree.heading("Descrição", text="Descrição")
         self.tree.pack(fill=tk.BOTH, expand=True)
 
         style = ttk.Style()
         style.configure("Treeview", rowheight=25)
         # Definindo a largura das colunas
         self.tree.column("ID", width=50)
-        self.tree.column("Quartos", width=100)
-        self.tree.column("Banheiros", width=100)
-        self.tree.column("Área", width=100)
-        self.tree.column("Aluguel", width=100)
+        self.tree.column("Quartos", width=50)
+        self.tree.column("Banheiros", width=50)
+        self.tree.column("Área", width=50)
+        self.tree.column("Aluguel", width=50)
+        self.tree.column("Descrição", width=100)
 
     # Criando os botões de Excluir e Atualizar
         self.frame_botoes = tk.Frame(master)
@@ -50,7 +52,7 @@ class minhas_casas:
             # Exibe as informações de cada casa na tabela
             for casa in casas:
                 self.tree.insert("", "end", values=(casa.id, casa.num_quartos, casa.num_banheiros,
-                                                    casa.metro_quadrado, casa.valor_aluguel_mensal))
+                                                    casa.metro_quadrado, casa.valor_aluguel_mensal, casa.descricao))
         except Exception as e:
             print(f"Erro ao mostrar as casas: {str(e)}")
 
