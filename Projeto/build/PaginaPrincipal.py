@@ -119,33 +119,33 @@ class PaginaPrincipal:
 
         # Criando um frame para os detalhes do usuário (nome e email)
         self.details_frame = tk.Frame(master, bg="white")
-        self.details_frame.pack(pady=10, anchor="w")
+        self.details_frame.pack(pady=10,padx=10 ,anchor="w")
 
         # Labels para Nome e Sobrenome na primeira linha
         self.label_nome = tk.Label(self.details_frame,
-                                   text=f"Nome: {nome_usuario}",
+                                   text=f"{nome_usuario}",
                                    anchor="w", bg="white",
                                    font=('Arial', 10, 'bold'))
-        self.label_nome.grid(row=0, column=0, padx=10, pady=2, sticky="w")
+        self.label_nome.grid(row=0, column=0,  pady=2,  sticky="w")
 
         self.label_sobrenome = tk.Label(self.details_frame,
-                                        text=f"Sobrenome: {sobrenome_usuario}",
+                                        text=f"{sobrenome_usuario}",
                                         anchor="w",
                                         bg="white",
                                         font=('Arial', 10, 'bold'))
-        self.label_sobrenome.grid(row=0, column=1, padx=10, pady=2, sticky="w")
+        self.label_sobrenome.grid(row=0, column=1,   sticky="w")
 
-        # Labels para Email e CPF na segunda linha
-        self.label_email = tk.Label(self.details_frame,
-                                    text=f"Email: {email_usuario}",
-                                    anchor="w",
-                                    bg="white",
-                                    font=('Arial', 10, 'bold'))
-        self.label_email.grid(row=1, column=0, padx=10, pady=5, sticky="w")
-
-        self.label_cpf = tk.Label(self.details_frame, text=f"CPF: {cpf}", anchor="w", bg="white",
-                                  font=('Arial', 10, 'bold'))
-        self.label_cpf.grid(row=1, column=1, padx=10, pady=5, sticky="w")
+        # # Labels para Email e CPF na segunda linha
+        # self.label_email = tk.Label(self.details_frame,
+        #                             text=f"Email: {email_usuario}",
+        #                             anchor="w",
+        #                             bg="white",
+        #                             font=('Arial', 10, 'bold'))
+        # self.label_email.grid(row=1, column=0, padx=10, pady=5, sticky="w")
+        #
+        # self.label_cpf = tk.Label(self.details_frame, text=f"CPF: {cpf}", anchor="w", bg="white",
+        #                           font=('Arial', 10, 'bold'))
+        # self.label_cpf.grid(row=1, column=1, padx=10, pady=5, sticky="w")
 
         self.user_frame = tk.Frame(master, bg="white")
         self.user_frame.pack(pady=20, anchor="w")

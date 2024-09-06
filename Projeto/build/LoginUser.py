@@ -64,7 +64,7 @@ class PaginaLogin:
         if success:
             # Registra o login bem-sucedido
             logging_config.logging.info(f'Login bem-sucedido: Nome: {user.nome}, Email: {user.email}')
-            messagebox.showinfo("Sucesso", f"Login bem-sucedido!\nNome: {user.nome}\nSobrenome: {user.sobreNome}\nEmail: {user.email}")
+            messagebox.showinfo("Sucesso", f"Login bem-sucedido!\nNome: {user.nome}\nSobrenome: {user.sobreNome}")
             self.mostrar_pagina_principal(user.nome, user.email, user.id, user.sobreNome, user.cpf)
         else:
             messagebox.showerror("Erro", "Usuário ou senha incorretos.")

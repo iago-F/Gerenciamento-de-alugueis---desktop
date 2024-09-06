@@ -54,30 +54,6 @@ class PaginaPagamento:
                                          bg="lightblue")
         self.botao_cadastrar.grid(row=4, column=0, columnspan=2, pady=20)
 
-    # def cadastrar_pagamento(self):
-    #     try:
-    #         contrato_id = int(self.entry_contrato_id.get())
-    #         dt_pagamento = self.entry_dt_pagamento.get()
-    #         valor_pagamento = float(self.entry_valor_pagamento.get())
-    #
-    #         inspector = inspect(engine)
-    #         if not inspector.has_table('pagamentos'):
-    #             Pagamento.__table__.create(bind=engine)
-    #
-    #         contrato = session.query(Contrato).filter_by(id=contrato_id).first()
-    #
-    #         if contrato:
-    #             pagamento = Pagamento(contrato_id=contrato_id, dt_pagamento=dt_pagamento, valor_pagamento=valor_pagamento)
-    #             contrato.pagamentos.append(pagamento)
-    #             session.add(pagamento)
-    #             session.commit()
-    #             messagebox.showinfo("Sucesso", "Pagamento cadastrado com sucesso!")
-    #         else:
-    #             messagebox.showerror("Erro", "Contrato não encontrado.")
-    #     except Exception as e:
-    #         session.rollback()
-    #         messagebox.showerror("Erro", f"Erro ao cadastrar pagamento: {str(e)}")
-    #
 
     def verificar_limite_pagamentos(self, contrato_id, novo_pagamento_valor):
         try:
@@ -150,7 +126,7 @@ class PaginaPagamento:
             # Obtenha os IDs dos contratos
             contrato_ids = [contrato.id for contrato in contratos]
 
-            # Em seguida, busque os pagamentos associados a esses contratos
+            # busca os pagamentos associados a esses contratos
             pagamentos = session.query(Pagamento).filter(Pagamento.contrato_id.in_(contrato_ids)).all()
 
             if pagamentos:
